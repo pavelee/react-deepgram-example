@@ -5,6 +5,22 @@ import React, { useState } from "react";
 const DeepgramHandler = (props) => {
     const [mediaRecorder, setMediaRecorder] = useState(null);
 
+    const uploadFile = file => {
+        console.log("Uploading file...");
+        const API_ENDPOINT = "http://localhost:8080/audio";
+        const request = new XMLHttpRequest();
+        const formData = new FormData();
+      
+        request.open("POST", API_ENDPOINT, true);
+        request.onreadystatechange = () => {
+          if (request.readyState === 4 && request.status === 200) {
+            console.log(request.responseText);
+          }
+        };
+        formData.append("file", file);
+        request.send(formData);
+      };
+
     const startRecord = () => {
         navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
             const mr = new MediaRecorder(stream);
@@ -20,11 +36,12 @@ const DeepgramHandler = (props) => {
 
             mr.addEventListener("stop", () => {
                 const audioBlob = new Blob(audioChunks);
-                console.log(audioChunks);
-                const audioUrl = URL.createObjectURL(audioBlob);
-                const audio = new Audio(audioUrl);
-                console.log(audio);
-                audio.play();
+                console.log(audioBlob);
+                uploadFile(audioBlob);
+                //const audioUrl = URL.createObjectURL(audioBlob);
+                //const audio = new Audio(audioUrl);
+                //console.log(audio);
+                //audio.play();
             });
 
             //   setTimeout(() => {
