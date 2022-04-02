@@ -5,28 +5,27 @@ import React, { useState } from "react";
 const DeepgramHandler = (props) => {
     const [mediaRecorder, setMediaRecorder] = useState(null);
 
-    const uploadFile = file => {
-        console.log("Uploading file...");
+    const uploadFile = (file) => {
+        console.log("Uploading file...", file);
         const API_ENDPOINT = "http://localhost:8080/audio";
-        const request = new XMLHttpRequest();
-        const formData = new FormData();
-      
-        request.open("POST", API_ENDPOINT, true);
-        request.onreadystatechange = () => {
-          if (request.readyState === 4 && request.status === 200) {
-            console.log(request.responseText);
-          }
-        };
+
+        const formData = new FormData()
+        formData.append('username', 'Sandra Rodgers')
+        // formData.append('file', file)
         formData.append("file", file);
-        request.send(formData);
-      };
+
+        fetch(API_ENDPOINT, {
+            method: "post",
+            body: formData,
+        })
+            .then((res) => console.log(res))
+            .catch((err) => ("Error occurred", err));
+    };
 
     const startRecord = () => {
         navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
             const mr = new MediaRecorder(stream);
             setMediaRecorder(mr);
-
-            mr.start();
 
             const audioChunks = [];
 
@@ -36,17 +35,10 @@ const DeepgramHandler = (props) => {
 
             mr.addEventListener("stop", () => {
                 const audioBlob = new Blob(audioChunks);
-                console.log(audioBlob);
                 uploadFile(audioBlob);
-                //const audioUrl = URL.createObjectURL(audioBlob);
-                //const audio = new Audio(audioUrl);
-                //console.log(audio);
-                //audio.play();
             });
 
-            //   setTimeout(() => {
-            //     mr.stop();
-            //   }, 3000);
+            mr.start();
         });
     };
 
