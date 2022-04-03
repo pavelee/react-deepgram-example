@@ -1,0 +1,20 @@
+version: '3.7'
+
+services:
+  deepgram-proxy:
+    container_name: deepgram-proxy
+    build: 
+      context: ./deepgram-proxy
+    volumes:
+      - ./deepgram-proxy:/usr/src/app:rw
+    ports:
+      - 8080:8080
+  deepgram-react:
+    container_name: deepgram-react
+    build: 
+      context: ./deepgram-react
+    volumes:
+      - ./deepgram-react:/usr/src/app:rw
+    ports:
+      - 3000:3000
+    
