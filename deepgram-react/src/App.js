@@ -13,7 +13,7 @@ const DeepgramHandler = (props) => {
         proxyUploadUrl,
         placement = "left",
         title = "Transcript your voice!",
-        trigger="click"
+        trigger = "click",
     } = props;
     const [mediaRecorder, setMediaRecorder] = useState(null);
     const [transcript, setTranscript] = useState(null);
@@ -108,11 +108,11 @@ const DeepgramHandler = (props) => {
 };
 
 function App() {
-    const proxyUploadUrl = "http://localhost:8080/audiotranscript"
+    const proxyUploadUrl = "http://localhost:8080/audiotranscript";
     const [value, setValue] = useState("");
     return (
         <Layout className="layout">
-            <Header>
+            <Header style={{ padding: 0 }}>
                 <div className="logo">
                     <img src={logo} className="App-logo" alt="logo" />
                 </div>
@@ -122,7 +122,10 @@ function App() {
                     <Col span={12}>
                         <Form name="basic" autoComplete="off" layout="vertical">
                             <Form.Item label="My notes" name="note">
-                                <DeepgramHandler setValue={setValue} proxyUploadUrl={proxyUploadUrl}>
+                                <DeepgramHandler
+                                    setValue={setValue}
+                                    proxyUploadUrl={proxyUploadUrl}
+                                >
                                     <Input.TextArea
                                         value={value}
                                         onChange={(ev) => {
