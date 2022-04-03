@@ -1,4 +1,4 @@
-import { Form, Input, Popover, Button, Checkbox } from "antd";
+import { Form, Input, Popover, Button, Alert, Checkbox } from "antd";
 import { Layout, Menu, Row, Col, Spin } from "antd";
 import logo from "./logo.svg";
 import "./App.css";
@@ -8,22 +8,16 @@ import "antd/dist/antd.css";
 const { Header, Content, Footer } = Layout;
 
 const DeepgramHandler = (props) => {
-    const {
-        setValue,
-        proxyUploadUrl,
-        placement = "left",
-        title = "Transcript your voice!",
-        trigger = "click",
-    } = props;
+    const { setValue, proxyUploadUrl } = props;
     const [mediaRecorder, setMediaRecorder] = useState(null);
     const [transcript, setTranscript] = useState(null);
     const [fetchingTranscript, setFetchingTranscript] = useState(false);
 
-    useEffect(() => {
-        if (setValue && transcript) {
-            setValue(transcript);
-        }
-    }, [transcript]);
+    // useEffect(() => {
+    //     if (setValue && transcript) {
+    //         setValue(transcript);
+    //     }
+    // }, [transcript]);
 
     const uploadFile = (file) => {
         console.log("Uploading file...", file);
@@ -39,7 +33,9 @@ const DeepgramHandler = (props) => {
         })
             .then((response) => response.json())
             .then((res) => {
-                setTranscript(res.transcript);
+                if (res.transcript) {
+                    setTranscript(res.transcript);
+                }
                 setFetchingTranscript(false);
             })
             .catch((err) => {
@@ -49,6 +45,7 @@ const DeepgramHandler = (props) => {
     };
 
     const startRecord = () => {
+        setTranscript(null);
         navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
             const mr = new MediaRecorder(stream);
             setMediaRecorder(mr);
@@ -73,43 +70,116 @@ const DeepgramHandler = (props) => {
         setMediaRecorder(null);
     };
 
-    const recordPanel = (props) => {
-        return (
-            <>
-                <Button
-                    onClick={() => {
-                        mediaRecorder
-                            ? stopRecord(mediaRecorder)
-                            : startRecord();
+    return (
+        <div style={{ maxWidth: 300 }}>
+            {/* <div style={{ marginBottom: 15 }}>
+                <Alert
+                    message="When you hit button below, you will ask to grant access to your microphone. We need that!"
+                    type="info"
+                    showIcon
+                />
+            </div> */}
+            {mediaRecorder && (
+                <div
+                    style={{
+                        textAlign: "center",
+                        marginTop: 15,
+                        marginBottom: 15,
                     }}
-                    type={mediaRecorder ? "danger" : "primary"}
-                    block
-                    loading={fetchingTranscript}
                 >
-                    {mediaRecorder && <span>stop!</span>}
-                    {!mediaRecorder && <span>let's go!</span>}
-                </Button>
-            </>
+                    <Spin tip="recording" />
+                </div>
+            )}
+            {fetchingTranscript && (
+                <div
+                    style={{
+                        textAlign: "center",
+                        marginTop: 15,
+                        marginBottom: 15,
+                    }}
+                >
+                    <Spin tip="using deebgram AI to transcript..." />
+                </div>
+            )}
+            {transcript && (
+                <Form
+                    layout={'vertical'}
+                >
+                    <Form.Item
+                        label={'transcription'}
+                    >
+                        <Input.TextArea
+                            value={transcript}
+                            onChange={(ev) => {
+                                setTranscript(ev.target.value);
+                            }}
+                        />
+                    </Form.Item>
+                    <Form.Item>
+                        <Button
+                            block
+                            onClick={() => {
+                                setValue(transcript);
+                            }}
+                        >
+                            Apply
+                        </Button>
+                    </Form.Item>
+                </Form>
+            )}
+            <Button
+                onClick={() => {
+                    mediaRecorder ? stopRecord(mediaRecorder) : startRecord();
+                }}
+                type={mediaRecorder ? "danger" : "primary"}
+                block
+                loading={fetchingTranscript}
+            >
+                {mediaRecorder && <span>stop!</span>}
+                {!mediaRecorder && <span>let's transcript!</span>}
+            </Button>
+        </div>
+    );
+};
+
+const DeepgramHandlerPopover = (props) => {
+    const {
+        setValue,
+        proxyUploadUrl,
+        placement = "left",
+        title = "Transcript your voice!",
+        trigger = "click",
+    } = props;
+
+    const PopoverContent = () => {
+        return (
+            <DeepgramHandler
+                setValue={setValue}
+                proxyUploadUrl={proxyUploadUrl}
+            />
         );
     };
 
     return (
-        <>
-            <Popover
-                placement={placement}
-                content={recordPanel()}
-                title={title}
-                trigger={trigger}
-            >
-                {props.children}
-            </Popover>
-        </>
+        <Popover
+            placement={placement}
+            content={PopoverContent()}
+            title={title}
+            trigger={trigger}
+        >
+            {props.children}
+        </Popover>
     );
 };
 
 function App() {
     const proxyUploadUrl = "http://localhost:8080/audiotranscript";
     const [value, setValue] = useState("");
+
+    const setNotepadValue = (val) => {
+        setValue(value + " " + val);
+    };
+
     return (
         <Layout className="layout">
             <Header style={{ padding: 0 }}>
@@ -120,19 +190,25 @@ function App() {
             <Content style={{ paddingTop: 15, minHeight: "100vh" }}>
                 <Row justify="center">
                     <Col span={12}>
+                        <h2>Notepad!</h2>
+                        <p>
+                            Use deepgram to take fast notes about anything! On
+                            any device!
+                        </p>
                         <Form name="basic" autoComplete="off" layout="vertical">
-                            <Form.Item label="My notes" name="note">
-                                <DeepgramHandler
-                                    setValue={setValue}
+                            <Form.Item label="My notebook" name="note">
+                                <DeepgramHandlerPopover
+                                    setValue={setNotepadValue}
                                     proxyUploadUrl={proxyUploadUrl}
                                 >
                                     <Input.TextArea
+                                        rows={20}
                                         value={value}
                                         onChange={(ev) => {
                                             setValue(ev.target.value);
                                         }}
                                     />
-                                </DeepgramHandler>
+                                </DeepgramHandlerPopover>
                             </Form.Item>
                         </Form>
                     </Col>
@@ -141,26 +217,6 @@ function App() {
             <Footer style={{ textAlign: "center" }}>Deepgram example!</Footer>
         </Layout>
     );
-    return (
-        <div className="App">
-            <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo" />
-                <p>
-                    <DeepgramHandler setValue={setValue}>
-                        <input
-                            value={value}
-                            onChange={(ev) => {
-                                setValue(ev.target.value);
-                            }}
-                            style={{ padding: 15 }}
-                        />
-                    </DeepgramHandler>
-                </p>
-            </header>
-        </div>
-    );
 }
-
-const styles = React.createS;
 
 export default App;
