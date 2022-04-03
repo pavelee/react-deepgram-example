@@ -8,7 +8,13 @@ import "antd/dist/antd.css";
 const { Header, Content, Footer } = Layout;
 
 const DeepgramHandler = (props) => {
-    const { setValue } = props;
+    const {
+        setValue,
+        proxyUploadUrl,
+        placement = "left",
+        title = "Transcript your voice!",
+        trigger="click"
+    } = props;
     const [mediaRecorder, setMediaRecorder] = useState(null);
     const [transcript, setTranscript] = useState(null);
     const [fetchingTranscript, setFetchingTranscript] = useState(false);
@@ -21,11 +27,9 @@ const DeepgramHandler = (props) => {
 
     const uploadFile = (file) => {
         console.log("Uploading file...", file);
-        const API_ENDPOINT = "http://localhost:8080/audiotranscript";
+        const API_ENDPOINT = proxyUploadUrl;
 
         const formData = new FormData();
-        formData.append("username", "Sandra Rodgers");
-        // formData.append('file', file)
         formData.append("file", file);
 
         setFetchingTranscript(true);
@@ -74,27 +78,29 @@ const DeepgramHandler = (props) => {
             <>
                 <Button
                     onClick={() => {
-                        startRecord();
+                        mediaRecorder
+                            ? stopRecord(mediaRecorder)
+                            : startRecord();
                     }}
-                    type={'primary'}
+                    type={mediaRecorder ? "danger" : "primary"}
                     block
                     loading={fetchingTranscript}
                 >
-                    transcript
+                    {mediaRecorder && <span>stop!</span>}
+                    {!mediaRecorder && <span>let's go!</span>}
                 </Button>
-                {mediaRecorder && (
-                    <button onClick={() => stopRecord(mediaRecorder)}>
-                        stop!
-                    </button>
-                )}
-                {/* {transcript && <p>{transcript}</p>} */}
             </>
         );
     };
 
     return (
         <>
-            <Popover placement={'left'} content={recordPanel()} title="Transcript your voice!" trigger="click">
+            <Popover
+                placement={placement}
+                content={recordPanel()}
+                title={title}
+                trigger={trigger}
+            >
                 {props.children}
             </Popover>
         </>
@@ -102,6 +108,7 @@ const DeepgramHandler = (props) => {
 };
 
 function App() {
+    const proxyUploadUrl = "http://localhost:8080/audiotranscript"
     const [value, setValue] = useState("");
     return (
         <Layout className="layout">
@@ -115,7 +122,7 @@ function App() {
                     <Col span={12}>
                         <Form name="basic" autoComplete="off" layout="vertical">
                             <Form.Item label="My notes" name="note">
-                                <DeepgramHandler setValue={setValue}>
+                                <DeepgramHandler setValue={setValue} proxyUploadUrl={proxyUploadUrl}>
                                     <Input.TextArea
                                         value={value}
                                         onChange={(ev) => {
