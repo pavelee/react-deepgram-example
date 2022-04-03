@@ -1,6 +1,11 @@
+import { Form, Input, Popover, Button, Checkbox } from "antd";
+import { Layout, Menu, Row, Col, Spin } from "antd";
 import logo from "./logo.svg";
 import "./App.css";
 import React, { useState, useEffect } from "react";
+import "antd/dist/antd.css";
+
+const { Header, Content, Footer } = Layout;
 
 const DeepgramHandler = (props) => {
     const { setValue } = props;
@@ -64,29 +69,68 @@ const DeepgramHandler = (props) => {
         setMediaRecorder(null);
     };
 
+    const recordPanel = (props) => {
+        return (
+            <>
+                <Button
+                    onClick={() => {
+                        startRecord();
+                    }}
+                    type={'primary'}
+                    block
+                    loading={fetchingTranscript}
+                >
+                    transcript
+                </Button>
+                {mediaRecorder && (
+                    <button onClick={() => stopRecord(mediaRecorder)}>
+                        stop!
+                    </button>
+                )}
+                {/* {transcript && <p>{transcript}</p>} */}
+            </>
+        );
+    };
+
     return (
         <>
-            <button
-                onClick={() => {
-                    startRecord();
-                }}
-            >
-                transcript
-            </button>
-            {mediaRecorder && (
-                <button onClick={() => stopRecord(mediaRecorder)}>stop!</button>
-            )}
-
-            {props.children}
-
-            {fetchingTranscript && <p>fetching transcript...</p>}
-            {transcript && <p>{transcript}</p>}
+            <Popover placement={'left'} content={recordPanel()} title="Transcript your voice!" trigger="click">
+                {props.children}
+            </Popover>
         </>
     );
 };
 
 function App() {
     const [value, setValue] = useState("");
+    return (
+        <Layout className="layout">
+            <Header>
+                <div className="logo">
+                    <img src={logo} className="App-logo" alt="logo" />
+                </div>
+            </Header>
+            <Content style={{ paddingTop: 15, minHeight: "100vh" }}>
+                <Row justify="center">
+                    <Col span={12}>
+                        <Form name="basic" autoComplete="off" layout="vertical">
+                            <Form.Item label="My notes" name="note">
+                                <DeepgramHandler setValue={setValue}>
+                                    <Input.TextArea
+                                        value={value}
+                                        onChange={(ev) => {
+                                            setValue(ev.target.value);
+                                        }}
+                                    />
+                                </DeepgramHandler>
+                            </Form.Item>
+                        </Form>
+                    </Col>
+                </Row>
+            </Content>
+            <Footer style={{ textAlign: "center" }}>Deepgram example!</Footer>
+        </Layout>
+    );
     return (
         <div className="App">
             <header className="App-header">
