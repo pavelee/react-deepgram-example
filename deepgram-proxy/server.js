@@ -1,8 +1,9 @@
 const express = require("express");
 var cors = require("cors");
 var app = express();
+require('dotenv').config();
 
-const deepgramApiKey = "x";
+const deepgramApiKey = process.env.DEEPGRAM_API_KEY
 
 const deepgramTranscript = async (deepgramApiKey, filepath, filemime = 'audio/wav') => {
     const deepgram = new Deepgram(deepgramApiKey);
