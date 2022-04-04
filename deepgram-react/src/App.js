@@ -1,4 +1,13 @@
-import { Form, Input, Popover, Button, Alert, Checkbox } from "antd";
+import {
+    Form,
+    Input,
+    Popover,
+    Button,
+    Alert,
+    Modal,
+    Steps,
+    Checkbox,
+} from "antd";
 import { Layout, Menu, Row, Col, Spin } from "antd";
 import logo from "./logo.svg";
 import "./App.css";
@@ -8,10 +17,26 @@ import "antd/dist/antd.css";
 const { Header, Content, Footer } = Layout;
 
 const DeepgramHandler = (props) => {
-    const { setValue, proxyUploadUrl } = props;
+    const { setValue, proxyUploadUrl, maxWidth } = props;
     const [mediaRecorder, setMediaRecorder] = useState(null);
     const [transcript, setTranscript] = useState(null);
+    const [alerts, setAlerts] = useState([]);
     const [fetchingTranscript, setFetchingTranscript] = useState(false);
+
+    const clearAlerts = () => {
+        setAlerts([]);
+    };
+
+    const addAlert = (message, type = "success", showIcon = true) => {
+        setAlerts([
+            ...alerts,
+            {
+                type,
+                message,
+                showIcon,
+            },
+        ]);
+    };
 
     // useEffect(() => {
     //     if (setValue && transcript) {
@@ -33,18 +58,25 @@ const DeepgramHandler = (props) => {
         })
             .then((response) => response.json())
             .then((res) => {
+                console.log(res);
                 if (res.transcript) {
                     setTranscript(res.transcript);
+                } else {
+                    addAlert(
+                        "Empty transcription! Repeat again, please!",
+                        "warning"
+                    );
                 }
                 setFetchingTranscript(false);
             })
             .catch((err) => {
-                console.log(err);
+                addAlert(err, "error");
                 setFetchingTranscript(false);
             });
     };
 
     const startRecord = () => {
+        clearAlerts();
         setTranscript(null);
         navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
             const mr = new MediaRecorder(stream);
@@ -71,14 +103,25 @@ const DeepgramHandler = (props) => {
     };
 
     return (
-        <div style={{ maxWidth: 300 }}>
-            {/* <div style={{ marginBottom: 15 }}>
-                <Alert
-                    message="When you hit button below, you will ask to grant access to your microphone. We need that!"
-                    type="info"
-                    showIcon
-                />
+        <div style={{ maxWidth: maxWidth ? maxWidth : "auto" }}>
+            {/* <div>
+                <Steps size="small" current={1}>
+                    <Steps.Step title="Record" />
+                    <Steps.Step title="transcript with AI" />
+                </Steps>
             </div> */}
+            {alerts && alerts.length > 0 && (
+                <div>
+                    {alerts.map((alert) => (
+                        <Alert
+                            style={{ marginBottom: 15 }}
+                            message={alert.message}
+                            type={alert.type}
+                            showIcon={alert.showIcon}
+                        />
+                    ))}
+                </div>
+            )}
             {mediaRecorder && (
                 <div
                     style={{
@@ -102,12 +145,8 @@ const DeepgramHandler = (props) => {
                 </div>
             )}
             {transcript && (
-                <Form
-                    layout={'vertical'}
-                >
-                    <Form.Item
-                        label={'transcription'}
-                    >
+                <Form layout={"vertical"}>
+                    <Form.Item label={"transcription"}>
                         <Input.TextArea
                             value={transcript}
                             onChange={(ev) => {
@@ -156,6 +195,7 @@ const DeepgramHandlerPopover = (props) => {
             <DeepgramHandler
                 setValue={setValue}
                 proxyUploadUrl={proxyUploadUrl}
+                maxWidth={300}
             />
         );
     };
@@ -169,6 +209,60 @@ const DeepgramHandlerPopover = (props) => {
         >
             {props.children}
         </Popover>
+    );
+};
+
+const DeepgramHandlerModal = (props) => {
+    const {
+        setValue,
+        proxyUploadUrl,
+        title = "Transcript your voice!",
+        visible = false,
+        setVisible,
+    } = props;
+
+    const onClose = () => setVisible(false);
+
+    return (
+        <Modal
+            title={title}
+            visible={visible}
+            onCancel={onClose}
+            footer={null}
+            // onOk={handleOk}
+            // onCancel={handleCancel}
+        >
+            <DeepgramHandler
+                setValue={setValue}
+                proxyUploadUrl={proxyUploadUrl}
+            />
+        </Modal>
+    );
+};
+
+const DeepgramHandlerModalButton = (props) => {
+    const {
+        setValue,
+        proxyUploadUrl,
+        buttonProps = {},
+        title = "Transcript your voice!",
+        defaultVisible = false,
+    } = props;
+    const [visible, setVisible] = useState(defaultVisible);
+
+    return (
+        <>
+            <DeepgramHandlerModal
+                title={title}
+                setValue={setValue}
+                proxyUploadUrl={proxyUploadUrl}
+                visible={visible}
+                setVisible={setVisible}
+            />
+            <Button {...buttonProps} onClick={() => setVisible(true)}>
+                transcript
+            </Button>
+        </>
     );
 };
 
@@ -196,7 +290,16 @@ function App() {
                             any device!
                         </p>
                         <Form name="basic" autoComplete="off" layout="vertical">
-                            <Form.Item label="My notebook" name="note">
+                            <Form.Item name="note">
+                                <div style={{ textAlign: 'left', marginBottom: 15 }}>
+                                    <DeepgramHandlerModalButton
+                                        setValue={setNotepadValue}
+                                        proxyUploadUrl={proxyUploadUrl}
+                                        buttonProps={{
+                                            type: "primary",
+                                        }}
+                                    />
+                                </div>
                                 <DeepgramHandlerPopover
                                     setValue={setNotepadValue}
                                     proxyUploadUrl={proxyUploadUrl}
