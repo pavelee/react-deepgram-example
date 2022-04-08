@@ -18,7 +18,6 @@ const FormExample = (props) => {
                 <DeepgramHandlerPopover
                     proxyUploadUrl={proxyUploadUrl}
                     setValue={setName}
-                    placement={'top'}
                 >
                     <Input
                         value={name}
@@ -55,7 +54,7 @@ const NotepadExample = (props) => {
 
     return (
         <Form name="basic" autoComplete="off" layout="vertical">
-            <Form.Item name="note">
+            <Form.Item>
                 <div
                     style={{
                         textAlign: "left",
@@ -88,7 +87,7 @@ const NotepadExample = (props) => {
 };
 
 function App() {
-    const proxyUploadUrl = "http://localhost:8080/audiotranscript";
+    const proxyUploadUrl = process.env.REACT_APP_UPLOAD_PROXY_URL;
 
     return (
         <Layout className="layout">

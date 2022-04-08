@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Form, Input, Popover, Button, Alert, Modal, Spin } from "antd";
 import { RocketOutlined } from "@ant-design/icons";
+import { v4 as uuidv4 } from 'uuid';
 
 export const DeepgramHandler = (props) => {
     const { setValue, proxyUploadUrl, maxWidth } = props;
@@ -30,7 +31,6 @@ export const DeepgramHandler = (props) => {
     };
 
     const uploadFile = (file) => {
-        console.log("Uploading file...", file);
         const API_ENDPOINT = proxyUploadUrl;
 
         const formData = new FormData();
@@ -43,7 +43,6 @@ export const DeepgramHandler = (props) => {
         })
             .then((response) => response.json())
             .then((res) => {
-                console.log(res);
                 if (res.transcript) {
                     setTranscript(res.transcript);
                 } else {
@@ -93,6 +92,7 @@ export const DeepgramHandler = (props) => {
                 <div>
                     {alerts.map((alert) => (
                         <Alert
+                            key={uuidv4()}
                             style={{ marginBottom: 15 }}
                             message={alert.message}
                             type={alert.type}
@@ -190,7 +190,7 @@ export const DeepgramHandlerPopover = (props) => {
             title={title}
             trigger={trigger}
         >
-            {props.children}
+            <div>{props.children}</div>
         </Popover>
     );
 };
