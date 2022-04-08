@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Form, Input, Popover, Button, Alert, Modal, Spin } from "antd";
+import { RocketOutlined } from "@ant-design/icons";
 
 export const DeepgramHandler = (props) => {
     const { setValue, proxyUploadUrl, maxWidth } = props;
@@ -153,7 +154,11 @@ export const DeepgramHandler = (props) => {
                 loading={fetchingTranscript}
             >
                 {mediaRecorder && <span>stop!</span>}
-                {!mediaRecorder && <span>let's transcript!</span>}
+                {!mediaRecorder && (
+                    <span>
+                        <RocketOutlined /> let's transcript!
+                    </span>
+                )}
             </Button>
         </div>
     );
@@ -231,7 +236,7 @@ export const DeepgramHandlerModalButton = (props) => {
                 setVisible={setVisible}
             />
             <Button {...buttonProps} onClick={() => setVisible(true)}>
-                transcript
+                <RocketOutlined /> let's transcript!
             </Button>
         </>
     );
