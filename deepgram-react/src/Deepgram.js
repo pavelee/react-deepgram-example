@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Form, Input, Popover, Button, Alert, Modal, Spin } from "antd";
 import { RocketOutlined } from "@ant-design/icons";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 export const DeepgramHandler = (props) => {
     const { setValue, proxyUploadUrl, maxWidth } = props;
@@ -190,7 +190,7 @@ export const DeepgramHandlerPopover = (props) => {
             title={title}
             trigger={trigger}
         >
-            <div>{props.children}</div>
+            {props.children}
         </Popover>
     );
 };
