@@ -6,6 +6,10 @@
 -   [How it's working?](#How-its-working)
     -   [deepgram-proxy](#deepgram-proxy)
     -   [deepgram-react](#deepgram-react)
+-   [Run a project](#run-a-project)
+    -   [get your API key](#get-your-API-key)
+    -   [set your API key](#set-your-API-key)
+    -   [run using docker](#run-using-docker)
 
 ## What's that?
 
@@ -23,12 +27,15 @@ Project was made as submission to DEV hackathlon, read more [here](https://dev.t
 
 ## How it's working?
 
-To make it work we need proxy to deepgram API.
+Project is built from two parts deepgram-proxy and deepgram-react
+
 ### deepgram-proxy
 
-First we need some backend to communicate with deepgram API. 
+We need some backend to upload audio file and communicate with deepgram API. 
 
-deepgram-proxy is a simple nodejs container with express.js to handler API requests.
+-   deepgram-proxy is a simple nodejs container with express.js to handler API requests.
+-   API allow to upload audio file and return transcript in return
+-   Backend communication with deepgram to secure API key
 
 ### deepgram-react
 
@@ -36,18 +43,18 @@ Simple example how to integrate your react app with proxy.
 
 ## Run a project
 
-### Get your API key
+### get your API key
 
 - Register deepgram account [https://deepgram.com](https://deepgram.com)
 - Generate API key in deepgram panel, more in docs
 
-### Set your API key
+### set your API key
 
 - Go to deepgram-proxy/.env-example
 - Copy file as .env
 - Set variable DEEPGRAM_API_KEY with your API key
 
-### Run using docker!
+### run using docker
 
 In root dir, just execute:
 
