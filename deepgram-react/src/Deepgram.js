@@ -156,7 +156,7 @@ export const DeepgramHandler = (props) => {
                 {mediaRecorder && <span>stop!</span>}
                 {!mediaRecorder && (
                     <span>
-                        <RocketOutlined /> let's transcript!
+                        <RocketOutlined /> Fill with your voice!
                     </span>
                 )}
             </Button>
@@ -169,7 +169,7 @@ export const DeepgramHandlerPopover = (props) => {
         setValue,
         proxyUploadUrl,
         placement = "left",
-        title = "Transcript your voice!",
+        title = "Fill with your voice!",
         trigger = "click",
     } = props;
 
@@ -199,7 +199,7 @@ export const DeepgramHandlerModal = (props) => {
     const {
         setValue,
         proxyUploadUrl,
-        title = "Transcript your voice!",
+        title = "Fill with your voice!",
         visible = false,
         setVisible,
     } = props;
@@ -221,7 +221,7 @@ export const DeepgramHandlerModalButton = (props) => {
         setValue,
         proxyUploadUrl,
         buttonProps = {},
-        title = "Transcript your voice!",
+        title = "Fill with your voice!",
         defaultVisible = false,
     } = props;
     const [visible, setVisible] = useState(defaultVisible);

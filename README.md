@@ -23,11 +23,12 @@ Read more here: [https://deepgram.com](https://deepgram.com)
 
 ### Purpose
 
-Purpose is to use speech transcription to improve an react app accessibility.
+Purpose is to use speech transcription to improve an react app accessibility. We provide extra way to input value!
 
--   Help to provide input for ppl with 
+-   Help to provide input for people with disabilities
 -   Speed up a form filling
--   Share expierience accross any device   
+-   Share expierience accross any device
+    -   react-native (mobile) as well!
 
 ## Why?
 
