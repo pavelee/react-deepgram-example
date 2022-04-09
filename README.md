@@ -1,7 +1,7 @@
 # React Deepgram example, AI speech transcription to improve accessibility
 
 -   [What's that?](#whats-that)
--   [Deepgram?](#deepgram)
+    -   [Deepgram?](#deepgram)
 -   [Why?](#why)
 -   [How it's working?](#How-its-working)
     -   [deepgram-proxy](#deepgram-proxy)
@@ -15,11 +15,19 @@
 
 It's example of integration deepgram using react.
 
-## Deepgram?
+### Deepgram?
 
-Deepgram is external service to transcript speech from audio! (using AI or other crazy stuff!)
+Deepgram is external service to transcript speech from audio! (using AI, crazy stuff!)
 
 Read more here: [https://deepgram.com](https://deepgram.com)
+
+### Purpose
+
+Purpose is to use speech transcription to improve an react app accessibility.
+
+-   Help to provide input for ppl with 
+-   Speed up a form filling
+-   Share expierience accross any device   
 
 ## Why?
 
