@@ -36,6 +36,11 @@ Simple example how to integrate your react app with proxy.
 
 ## Run a project
 
+### Get your API key
+
+- Register deepgram account [https://deepgram.com](https://deepgram.com)
+- Generate API key in deepgram panel, more in docs
+
 ### Set your API key
 
 - Go to deepgram-proxy/.env-example
