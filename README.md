@@ -7,9 +7,9 @@
     -   [deepgram-proxy](#deepgram-proxy)
     -   [deepgram-react](#deepgram-react)
 -   [Run a project](#run-a-project)
-    -   [get your API key](#get-your-API-key)
-    -   [set your API key](#set-your-API-key)
-    -   [run using docker](#run-using-docker)
+    -   [Get your API key](#get-your-API-key)
+    -   [Set your API key](#set-your-API-key)
+    -   [Run using docker](#run-using-docker)
 
 ## What's that?
 
@@ -43,18 +43,18 @@ Simple example how to integrate your react app with proxy.
 
 ## Run a project
 
-### get your API key
+### Get your API key
 
 - Register deepgram account [https://deepgram.com](https://deepgram.com)
 - Generate API key in deepgram panel, more in docs
 
-### set your API key
+### Set your API key
 
 - Go to deepgram-proxy/.env-example
 - Copy file as .env
 - Set variable DEEPGRAM_API_KEY with your API key
 
-### run using docker
+### Run using docker
 
 In root dir, just execute:
 
