@@ -56,3 +56,12 @@ By default project will be available on ports:
 http://localhost:3000 -> frontend
 http://localhost:8080 -> proxy
 ```
+
+If you would like to change ports, just edit .env file in root directory:
+
+```
+FRONTEND_PORT=3000
+FRONTEND_NAME=deepgram-react
+PROXY_PORT=8080
+PROXY_NAME=deepgram-proxy
+```
