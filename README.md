@@ -1,4 +1,4 @@
-# React Deepgram example, AI speech transcription
+# React Deepgram example, AI speech transcription to improve accessibility
 
 -   [What's that?](#whats-that)
 -   [Deepgram?](#deepgram)
@@ -33,3 +33,26 @@ deepgram-proxy is a simple nodejs container with express.js to handler API reque
 ### deepgram-react
 
 Simple example how to integrate your react app with proxy.
+
+## Run a project
+
+### Set your API key
+
+- Go to deepgram-proxy/.env-example
+- Copy file as .env
+- Set variable DEEPGRAM_API_KEY with your API key
+
+### Run using docker!
+
+In root dir, just execute:
+
+```
+docker-compose up -d
+```
+
+By default project will be available on ports:
+
+```
+http://localhost:3000 -> frontend
+http://localhost:8080 -> proxy
+```
