@@ -49,12 +49,16 @@ Project is built from two parts deepgram-proxy and deepgram-react
 We need some backend to upload audio file and communicate with deepgram API.
 
 -   deepgram-proxy is a simple nodejs container with express.js to handler API requests.
--   API allow to upload audio file and return transcript in return
--   Backend communication with deepgram to secure API key
+-   API allow to upload audio a file and return a transcript in return
+-   Backend communication to secure API key
 
 ### deepgram-react
 
-Simple example how to integrate your react app with proxy.
+Simple example how to integrate your react app with the proxy.
+
+### Can I use other frontend?
+
+Yes! You can integrate any other app with the proxy! It's just REST API!
 
 ## Run a project
 
