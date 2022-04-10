@@ -1,4 +1,4 @@
-# React Deepgram example, AI speech transcription to improve react app accessibility
+# Boost your react app accessibility with AI Speech Recognition (Deepgram)!
 
 -   [What's that?](#whats-that)
     -   [Deepgram?](#deepgram)
