@@ -2,6 +2,7 @@
 
 -   [What's that?](#whats-that)
     -   [Deepgram?](#deepgram)
+    -   [Purpose](#purpose)
 -   [Why?](#why)
 -   [How it's working?](#How-its-working)
     -   [deepgram-proxy](#deepgram-proxy)
@@ -9,7 +10,9 @@
 -   [Run a project](#run-a-project)
     -   [Get your API key](#get-your-API-key)
     -   [Set your API key](#set-your-API-key)
-    -   [Run using docker](#run-using-docker)
+    -   [Run](#run)
+        -   [Using docker](#using-docker)
+        -   [Using local env](#using-local-env)
 
 ## What's that?
 
@@ -28,7 +31,7 @@ Purpose is to use speech transcription to improve an react app accessibility. We
 -   Help to provide input for people with disabilities
 -   Speed up a form filling
 -   Share expierience accross any device
-    -   react-native (mobile) as well!
+    -   react-native (mobile, TV, dekstop) as well!
 
 ## Why?
 
@@ -40,7 +43,7 @@ Project is built from two parts deepgram-proxy and deepgram-react
 
 ### deepgram-proxy
 
-We need some backend to upload audio file and communicate with deepgram API. 
+We need some backend to upload audio file and communicate with deepgram API.
 
 -   deepgram-proxy is a simple nodejs container with express.js to handler API requests.
 -   API allow to upload audio file and return transcript in return
@@ -54,16 +57,18 @@ Simple example how to integrate your react app with proxy.
 
 ### Get your API key
 
-- Register deepgram account [https://deepgram.com](https://deepgram.com)
-- Generate API key in deepgram panel, more in docs
+-   Register deepgram account [https://deepgram.com](https://deepgram.com)
+-   Generate API key in deepgram panel, more in docs
 
 ### Set your API key
 
-- Go to deepgram-proxy/.env-example
-- Copy file as .env
-- Set variable DEEPGRAM_API_KEY with your API key
+-   Go to deepgram-proxy/.env-example
+-   Copy file as .env
+-   Set variable DEEPGRAM_API_KEY with your API key
 
-### Run using docker
+### Run
+
+#### Using docker
 
 In root dir, just execute:
 
@@ -85,4 +90,29 @@ FRONTEND_PORT=3000
 FRONTEND_NAME=deepgram-react
 PROXY_PORT=8080
 PROXY_NAME=deepgram-proxy
+```
+
+#### Using local env
+
+First start a proxy
+
+```
+cd deepgram-proxy
+npm install
+npm start
+```
+
+next start a frontend
+
+```
+cd deepgram-frontend
+npm install
+npm start
+```
+
+By default project will be available on ports:
+
+```
+http://localhost:3000 -> frontend
+http://localhost:8080 -> proxy
 ```
