@@ -4,6 +4,7 @@ const { Deepgram } = require("@deepgram/sdk");
 const deepgramTranscript = async (
     deepgramApiKey,
     filepath,
+    language = 'en',
     filemime = "audio/wav"
 ) => {
     const deepgram = new Deepgram(deepgramApiKey);
@@ -21,6 +22,7 @@ const deepgramTranscript = async (
     await deepgram.transcription
         .preRecorded(source, {
             punctuate: true,
+            language: language
         })
         .then((response) => {
             finalResponse =

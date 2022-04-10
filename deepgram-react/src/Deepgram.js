@@ -1,7 +1,66 @@
 import { useState } from "react";
-import { Form, Input, Popover, Button, Alert, Modal, Spin } from "antd";
+import { Form, Input, Popover, Button, Alert, Modal, Spin, Select } from "antd";
 import { RocketOutlined } from "@ant-design/icons";
 import { v4 as uuidv4 } from "uuid";
+
+const languages = [
+    {
+        label: "English",
+        value: "en",
+    },
+    {
+        label: "Chinese",
+        value: "zh-CN",
+    },
+    {
+        label: "Dutch",
+        value: "nl",
+    },
+    {
+        label: "French",
+        value: "fr",
+    },
+    {
+        label: "German",
+        value: "de",
+    },
+    {
+        label: "Hindi",
+        value: "hi",
+    },
+    {
+        label: "Indonesian",
+        value: "id",
+    },
+    {
+        label: "Italian",
+        value: "it",
+    },
+    {
+        label: "Korean",
+        value: "ko",
+    },
+    {
+        label: "Portuguese",
+        value: "pt",
+    },
+    {
+        label: "Russian",
+        value: "ru",
+    },
+    {
+        label: "Spanish",
+        value: "sv",
+    },
+    {
+        label: "Turkish",
+        value: "tr",
+    },
+    {
+        label: "Ukrainian",
+        value: "uk",
+    },
+];
 
 export const DeepgramHandler = (props) => {
     const {
@@ -14,11 +73,13 @@ export const DeepgramHandler = (props) => {
         stopMessage = "stop!",
         transcriptMessage = "let's transcript!",
         appliedMessage = "Succesfully applied!",
+        defaultLanguage = "en",
     } = props;
     const [mediaRecorder, setMediaRecorder] = useState(null);
     const [transcript, setTranscript] = useState(null);
     const [alerts, setAlerts] = useState([]);
     const [fetchingTranscript, setFetchingTranscript] = useState(false);
+    const [language, setLanguage] = useState(defaultLanguage);
 
     const clearAlerts = () => {
         setAlerts([]);
@@ -40,11 +101,12 @@ export const DeepgramHandler = (props) => {
         addAlert(appliedMessage);
     };
 
-    const uploadFile = (file) => {
+    const uploadFile = (file, language = defaultLanguage) => {
         const API_ENDPOINT = proxyUploadUrl;
 
         const formData = new FormData();
         formData.append("file", file);
+        formData.append("language", language);
 
         setFetchingTranscript(true);
         fetch(API_ENDPOINT, {
@@ -81,7 +143,7 @@ export const DeepgramHandler = (props) => {
 
             mr.addEventListener("stop", () => {
                 const audioBlob = new Blob(audioChunks);
-                uploadFile(audioBlob);
+                uploadFile(audioBlob, language);
             });
 
             mr.start();
@@ -152,6 +214,24 @@ export const DeepgramHandler = (props) => {
                     </Form.Item>
                 </Form>
             )}
+            <div style={{ marginBottom: 15 }}>
+                <Select
+                    value={language}
+                    onChange={(val) => {
+                        setLanguage(val);
+                    }}
+                    style={{ width: "100%" }}
+                >
+                    {languages.map((language) => (
+                        <Select.Option
+                            key={language.value}
+                            value={language.value}
+                        >
+                            {language.label}
+                        </Select.Option>
+                    ))}
+                </Select>
+            </div>
             <Button
                 onClick={() => {
                     mediaRecorder ? stopRecord(mediaRecorder) : startRecord();

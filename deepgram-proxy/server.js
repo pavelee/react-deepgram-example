@@ -19,9 +19,9 @@ const HOST = "0.0.0.0";
 // endpoint to upload and transcript
 app.post("/audiotranscript", upload.single("file"), async (req, res) => {
     let filepath = req.file.path
-    let transcript = await deepgramTranscript(deepgramApiKey, filepath);
+    let language = req.body.language;
+    let transcript = await deepgramTranscript(deepgramApiKey, filepath, language);
     res.send({ transcript: transcript });
 });
 
 app.listen(PORT, HOST);
-console.log(`Running on http://${HOST}:${PORT}`);
