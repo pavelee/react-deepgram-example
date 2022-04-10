@@ -69,10 +69,10 @@ export const DeepgramHandler = (props) => {
         maxWidth,
         emptyTranscriptionWarningMessage = "Empty transcription! Repeat again, please!",
         listenEventMessage = "listening...",
-        transcriptingEventMessage = "using deebgram AI to transcript...",
+        transcriptingEventMessage = "using AI to transcript...",
         stopMessage = "stop!",
         transcriptMessage = "let's transcript!",
-        appliedMessage = "Succesfully applied!",
+        appliedMessage = "Successfully applied!",
         defaultLanguage = "en",
     } = props;
     const [mediaRecorder, setMediaRecorder] = useState(null);
@@ -116,7 +116,12 @@ export const DeepgramHandler = (props) => {
             .then((response) => response.json())
             .then((res) => {
                 if (res.transcript) {
-                    setTranscript(res.transcript);
+                    // catch error returned in transcription? Deepgram, why?
+                    if (res.transcript.indexOf('"error":"Bad Request"') != -1) {
+                        addAlert(res.transcript, 'error')
+                    } else {
+                        setTranscript(res.transcript);
+                    }
                 } else {
                     addAlert(emptyTranscriptionWarningMessage, "warning");
                 }
