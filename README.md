@@ -18,6 +18,8 @@
 
 It's example of integration with Deepgram using react.
 
+![gif](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/x6n5skgl52tetmn2vta4.gif)
+
 ### Deepgram?
 
 Deepgram is external service to transcript speech from audio! (using AI, crazy stuff!)
@@ -31,6 +33,7 @@ Purpose is to use speech transcription to improve an react app accessibility. We
 -   Help to provide input for people with disabilities
 -   Speed up a form filling
 -   Share expierience accross any device
+    -   any device supporting modern browser
     -   react-native (mobile, TV, dekstop) as well!
 
 ## Why?
@@ -97,17 +100,17 @@ PROXY_NAME=deepgram-proxy
 First start a proxy
 
 ```
+# move to proxy folder
 cd deepgram-proxy
-npm install
-npm start
+npm install && npm start
 ```
 
 next start a frontend
 
 ```
-cd deepgram-frontend
-npm install
-npm start
+# move to frontend folder
+cd deepgram-react
+npm install && npm start
 ```
 
 By default project will be available on ports:
