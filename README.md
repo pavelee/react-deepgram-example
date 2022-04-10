@@ -40,6 +40,8 @@ Purpose is to use speech transcription to improve an react app accessibility. We
 
 Project was made as submission to DEV hackathlon, read more [here](https://dev.to/devteam/join-us-for-a-new-kind-of-hackathon-on-dev-brought-to-you-by-deepgram-2bjd)
 
+Post here: [post](https://dev.to/pavelee/boost-your-app-accessibility-with-ai-speech-recognition-deepgram-5fl9)
+
 ## How it's working?
 
 Project is built from two parts deepgram-proxy and deepgram-react
