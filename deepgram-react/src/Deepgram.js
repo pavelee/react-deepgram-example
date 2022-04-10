@@ -4,7 +4,17 @@ import { RocketOutlined } from "@ant-design/icons";
 import { v4 as uuidv4 } from "uuid";
 
 export const DeepgramHandler = (props) => {
-    const { setValue, proxyUploadUrl, maxWidth } = props;
+    const {
+        setValue,
+        proxyUploadUrl,
+        maxWidth,
+        emptyTranscriptionWarningMessage = "Empty transcription! Repeat again, please!",
+        listenEventMessage = "listening...",
+        transcriptingEventMessage = "using deebgram AI to transcript...",
+        stopMessage = "stop!",
+        transcriptMessage = "let's transcript!",
+        appliedMessage = "Succesfully applied!",
+    } = props;
     const [mediaRecorder, setMediaRecorder] = useState(null);
     const [transcript, setTranscript] = useState(null);
     const [alerts, setAlerts] = useState([]);
@@ -27,7 +37,7 @@ export const DeepgramHandler = (props) => {
 
     const applyTranscript = (transcript) => {
         setValue(transcript);
-        addAlert("Succesfully applied!");
+        addAlert(appliedMessage);
     };
 
     const uploadFile = (file) => {
@@ -46,10 +56,7 @@ export const DeepgramHandler = (props) => {
                 if (res.transcript) {
                     setTranscript(res.transcript);
                 } else {
-                    addAlert(
-                        "Empty transcription! Repeat again, please!",
-                        "warning"
-                    );
+                    addAlert(emptyTranscriptionWarningMessage, "warning");
                 }
                 setFetchingTranscript(false);
             })
@@ -109,7 +116,7 @@ export const DeepgramHandler = (props) => {
                         marginBottom: 15,
                     }}
                 >
-                    <Spin tip="listening..." />
+                    <Spin tip={listenEventMessage} />
                 </div>
             )}
             {fetchingTranscript && (
@@ -120,7 +127,7 @@ export const DeepgramHandler = (props) => {
                         marginBottom: 15,
                     }}
                 >
-                    <Spin tip="using deebgram AI to transcript..." />
+                    <Spin tip={transcriptingEventMessage} />
                 </div>
             )}
             {transcript && (
@@ -153,10 +160,10 @@ export const DeepgramHandler = (props) => {
                 block
                 loading={fetchingTranscript}
             >
-                {mediaRecorder && <span>stop!</span>}
+                {mediaRecorder && <span>{stopMessage}</span>}
                 {!mediaRecorder && (
                     <span>
-                        <RocketOutlined /> Fill with your voice!
+                        <RocketOutlined /> {transcriptMessage}
                     </span>
                 )}
             </Button>
@@ -222,6 +229,7 @@ export const DeepgramHandlerModalButton = (props) => {
         proxyUploadUrl,
         buttonProps = {},
         title = "Fill with your voice!",
+        buttonText = "let's transcript!",
         defaultVisible = false,
     } = props;
     const [visible, setVisible] = useState(defaultVisible);
@@ -236,7 +244,7 @@ export const DeepgramHandlerModalButton = (props) => {
                 setVisible={setVisible}
             />
             <Button {...buttonProps} onClick={() => setVisible(true)}>
-                <RocketOutlined /> let's transcript!
+                <RocketOutlined /> {buttonText}
             </Button>
         </>
     );
